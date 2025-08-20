@@ -78,7 +78,7 @@ https://github.com/user-attachments/assets/d3c2042e-1a44-4888-8880-fe7057fed87c
 
 
 ## Currency Converter - Project 2
-
+https://github.com/user-attachments/assets/2a047072-7c8e-4195-93b8-0d04a41c6683
 
 
 
