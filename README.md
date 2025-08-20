@@ -73,7 +73,7 @@ This structure ensures the game provides real-time feedback, guiding the player 
 
 
 ### Output
-
+https://github.com/user-attachments/assets/d3c2042e-1a44-4888-8880-fe7057fed87c
 
 
 
