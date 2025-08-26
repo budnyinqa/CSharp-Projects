@@ -88,12 +88,37 @@ I decided to keep the project minimalistic by using only two primary colors, two
 <img width="1207" height="788" alt="Image" src="https://github.com/user-attachments/assets/563258e9-6905-4b9c-a9a3-8ea82a5a0441" />
 
 
-### 
+### Initialization and Setup
+The application begins its execution with the initialization of the main form. A boolean flag `isInitializing` is declared and set to true to indicate that the form is still being set up. This flag is used throughout the code to prevent unnecessary execution of conversion logic while the user interface is not fully initialized. The application sets default values for the input fields and dropdowns. Specifically, the amount textbox `EnterAmount` is initialized to "1", while the source currency dropdown `From` selects the second currency, and the target currency dropdown `To` selects the first currency.
+```C#
+ public Form1()
+ {
+     InitializeComponent();
+
+     EnterAmount.Text = "1"; // Sets default value for the amount input
+     From.SelectedIndex = 1; // Select the second currency by default
+     To.SelectedIndex = 0; // Select the first currency by default
+
+     AmountScrollBar.Scroll += AmountScrollBar_Scroll; // Attach scroll event handler to AmountScrollBar
+
+     isInitializing = false;
+
+     UpdateConversion(); // Perform an conversion update
+ }
+```
+The scrollbar is connected to an event handler to ensure that any change in the scrollbar updates the input amount dynamically. Finally, after the initialization is complete, the `isInitializing` flag is set to false, and the initial conversion is calculated by calling `UpdateConversion()`.
+
+
+### Currency Convertion Logic
+
+
+
+
+
 
 
 
 ### Output
-https://github.com/user-attachments/assets/2a047072-7c8e-4195-93b8-0d04a41c6683
 
 
 
