@@ -139,10 +139,30 @@ result2.Location = new Point(
 ```
 
 
+### Interface Interactions
+The application responds to several user interactions. The scrollbar movement is linked to the `AmountScrollBar_Scroll` event, which updates the amount textbox in real time. Clicking the GENERATE button triggers a conversion by calling `UpdateConversion()`. 
 
-
-
-
+Users can swap the source and target currencies by clicking on a picture box, which temporarily stores the target currency index, performs the swap.
+```C#
+private void pictureBox1_Click(object sender, EventArgs e)
+{
+    int To_copy = To.SelectedIndex; // Temporarily store the target currency
+    // Swap the selections
+    To.SelectedIndex = From.SelectedIndex;
+    From.SelectedIndex = To_copy;
+}
+```
+Lastly, the CLEAR button resets the form by clearing the amount, deselecting both currencies, moving the scrollbar to its minimum position, and unchecking the rounding checkbox.
+```C#
+private void button2_Click(object sender, EventArgs e)
+{
+    From.SelectedIndex = -1; // Deselect "From" currency
+    To.SelectedIndex = -1; // Deselect "To" currency
+    EnterAmount.Text = ""; // Clear input field
+    Round_checkBox.Checked = false; // Reset checkbox
+    AmountScrollBar.Value = AmountScrollBar.Minimum; // Reset scrollbar to its minimum position
+}
+```
 
 
 ### Output
