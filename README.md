@@ -78,6 +78,21 @@ https://github.com/user-attachments/assets/d3c2042e-1a44-4888-8880-fe7057fed87c
 
 
 ## Currency Converter - Project 2
+The purpose of this project was to create a currency converter in the form of a `Windows Forms` application. All objects had to be placed using the designer and assigned appropriate properties. The calculation logic was kept simple, as the exchange rates were stored inside an array. Additionally, the program includes several useful features: a clear button to reset values, a swap button to quickly change the conversion direction, a scroll bar to help select the amount, and a round value checkbox to simplify the output.
+
+Although it is a relatively simple project, it demonstrates my ability to structure code, use arrays effectively, and implement practical UI elements in `Windows Forms`. This project also helped me strengthen my understanding of event-driven programming and the fundamentals of building user-friendly desktop applications.
+
+
+### Designer
+I decided to keep the project minimalistic by using only two primary colors, two fonts, and a picture box to display a custom icon. While placing the individual objects, I assigned each of them a unique name and added events whenever necessary.
+<img width="1207" height="788" alt="Image" src="https://github.com/user-attachments/assets/563258e9-6905-4b9c-a9a3-8ea82a5a0441" />
+
+
+### 
+
+
+
+### Output
 https://github.com/user-attachments/assets/2a047072-7c8e-4195-93b8-0d04a41c6683
 
 
