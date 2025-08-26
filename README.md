@@ -110,6 +110,33 @@ The scrollbar is connected to an event handler to ensure that any change in the 
 
 
 ### Currency Convertion Logic
+The exchange rates are stored in a two-dimensional array called `exchange_rate`. Each row of this array represents the source currency, while each column corresponds to the target currency.
+```C#
+private readonly decimal[,] exchange_rate = new decimal[,] // 2D array storing exchange rates between different currencies
+{
+    {1.0m, 4.25126m, 1.03717m},
+    {0.235224m, 1.0m, 0.243978m},
+    {0.964161m, 4.10505m, 1.0m}
+};
+```
+To perform the conversion, the method `ConvertCurrency` takes an amount along with the source and target currency indexes. It retrieves the relevant rate from the array and multiplies the amount by this rate.
+```C#
+private decimal ConvertCurrency(decimal amount, int fromCurrency, int toCurrency)
+{
+    decimal rate = exchange_rate[fromCurrency, toCurrency]; // Get the exchange rate from the table
+    return amount * rate; // Multiply the amount by the rate
+}
+```
+The `UpdateConversion` method orchestrates the process of reading the input, validating it, performing the conversion, rounding the result if requested, and updating the user interface. It first checks the `isInitializing` flag and returns immediately if the form is still being set up. The method then tries to parse the value from `EnterAmount`. If parsing fails, an error message is displayed to the user. 
+
+Using `ConvertCurrency`, the converted value is calculated. If the user has selected the rounding option by the checkbox, the amount is rounded to two decimal places. Finally, the converted value is displayed in the `result2` label, which is horizontally centered on the form, and the conversion rate label is updated.
+```C#
+result2.Text = $"{amount}{From.Text} = {converted_amount}{To.Text}"; // Display the conversion result in the result label
+// Center the result label horizontally in the form
+result2.Location = new Point(
+    (this.ClientSize.Width - result2.Width) / 2,
+    result2.Location.Y);
+```
 
 
 
