@@ -170,11 +170,18 @@ private void button2_Click(object sender, EventArgs e)
 
 
 ## Brick Breaker - Project 3
+The goal of the project is to create a Breakout-style game, in which the player controls a paddle that bounces a ball in order to destroy all the bricks on the screen. The ball bounces off the walls, the paddle, and the bricks, destroying them upon collision, and if it falls below the bottom edge of the screen, the game ends.
+
+A demo has also been included, showing a game played automatically, where the paddle moves on its own.
 
 
+### Main Menu
+The first and also the easiest element to create is the main menu, from which the user decides whether they want to try playing the game, watch the demo, or close the application. Its primary task is therefore to initialize the graphical interface and respond to player interactions through buttons.
+
+The menu is created in a public class that extends the `Panel` class, which means it is a part of the graphical interface. Inside the class, there are also several methods, and I would like to discuss the most important ones in the following subsections.
 
 
-
+#### InitializeMenu method
 
 
 
