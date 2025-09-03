@@ -176,15 +176,89 @@ A demo has also been included, showing a game played automatically, where the pa
 
 
 ### Main Menu
-The first and also the easiest element to create is the main menu, from which the user decides whether they want to try playing the game, watch the demo, or close the application. Its primary task is therefore to initialize the graphical interface and respond to player interactions through buttons.
+The first and also the easiest element to create is the main menu, from which the user decides whether they want to play the game, watch the demo, or close the application. Its primary task is therefore to initialize the graphical interface and respond to player interactions through buttons.
 
 The menu is created in a public class that extends the `Panel` class, which means it is a part of the graphical interface. Inside the class, there are also several methods, and I would like to discuss the most important ones in the following subsections.
 
 
 #### InitializeMenu method
+The method is responsible for preparing and arranging the elements, buttons and header, within the panel. It first calculates the optimal proportions using the form’s dimensions to ensure that all objects are centered on the screen. The buttons are generated through a separate method created specifically for this purpose.
+
+In addition, this method assigns actions to the individual buttons, ensuring that the entire menu is fully functional.
+```C#
+private void InitializeMenu() // Initialize buttons, create a label, and handle individual events
+{
+    // Calculate the ideal starting positions for the created buttons on the X and Y axes to keep everything centered
+    int buttonWidth = 170, buttonHeight = 70, gap = 12, labelHeight = 150, labelWidth = 600;
+    int totalHeight = labelHeight + buttonHeight * 2 + gap * 4;
+    int startY = (int)((this.ClientSize.Height - totalHeight) / 2.5);
+    int buttonStartX = (this.ClientSize.Width - buttonWidth - gap) / 2;
+    int buttonStartY = startY + labelHeight + gap * 2;
+
+    // Create the title label
+    titleLabel = new Label
+    {
+        Text = "Brick Breaker",
+        Font = fontFamily != null ? new Font(fontFamily, 48, FontStyle.Regular) : new Font("Arial", 10, FontStyle.Regular),
+        ForeColor = Color.White,
+        BackColor = Color.FromArgb(30, 32, 40),
+        TextAlign = ContentAlignment.MiddleCenter,
+        AutoSize = false,
+        Size = new Size(labelWidth, labelHeight),
+        Location = new Point((this.ClientSize.Width - labelWidth) / 2, startY)
+    };
+    this.Controls.Add(titleLabel);
+
+    // Create the buttons
+    startButton = CreateButton("Start", Properties.Resources.pinkBrick, buttonWidth, buttonHeight,
+        buttonStartX, buttonStartY, (sender, e) =>
+        {
+            form.Invoke(new MethodInvoker(() => form.StartGame())); // When "Start" is clicked, the StartGame method from Form1 is executed
+        });
+
+    demoButton = CreateButton("Demo", Properties.Resources.orangeBrick, buttonWidth, buttonHeight,
+        buttonStartX, buttonStartY + buttonHeight + gap, (sender, e) =>
+        {
+            form.Invoke(new MethodInvoker(() => form.StartDemo())); // Similarly, "Demo" launches the demo mode
+        });
+
+    exitButton = CreateButton("Exit", Properties.Resources.greenBrick, buttonWidth, buttonHeight,
+        buttonStartX, buttonStartY + (buttonHeight + gap) * 2, (sender, e) =>
+        {
+            form.Invoke(new MethodInvoker(() => form.Close())); // The "Exit" button closes the application
+        });
+
+    // Add the buttons to the panel
+    this.Controls.Add(startButton);
+    this.Controls.Add(demoButton);
+    this.Controls.Add(exitButton);
+}
+```
 
 
+#### LoadCustomFont method
+This method was created because I used a font that is not available by default in Windows Forms, more on copyright in the last Chapter. An application built with a font installed only on my computer would not work properly on another device. I couldn’t imagine forcing the user to download a font before running the application, so the font file was added directly to the project files.
 
+To make everything work correctly, it was also necessary to create a special method to handle the font. Personally, this was one of the more challenging methods for me to write, as finding a working solution online and successfully applying it to my application proved to be quite demanding.
+```C#
+private void LoadCustomFont() // Method allowing the use of a font from project files
+{
+    string fontPath = Path.Combine(Application.StartupPath, "A Goblin Appears!.otf");
+    if (File.Exists(fontPath)) // Check if the path exists
+    {
+        PrivateFontCollection fontCollection = new PrivateFontCollection();
+        fontCollection.AddFontFile(fontPath);
+        fontFamily = fontCollection.Families[0];
+    }
+    else
+    {
+        MessageBox.Show("Font didn't load properly"); // If it doesn't exist, show a message
+    }
+}
+```
+
+
+## Game Objects
 
 
 
