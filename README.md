@@ -259,31 +259,184 @@ private void LoadCustomFont() // Method allowing the use of a font from project 
 
 
 ## Game Objects
+I consider the classes used to create game objects to be the strongest part of the project from an object-oriented perspective. They make use of the four fundamental principles of OOP:
+
+* **Encapsulation** – The properties and methods of each class are defined as either private or public, which restricts access to internal class data and ensures better code organization.
+* **Inheritance** – All objects inherit from the base class `GameObjects`, which improves extensibility and eliminates the need to duplicate code (objects share common features such as `width`, `height`, and the `Draw` method).
+* **Polymorphism** – The derived classes override the `Move` method, each providing its own unique implementation.
+* **Abstraction** – The `GameObjects` class serves as the abstract base for all game elements. Additionally, the `Move` method itself is abstract, enforcing its implementation in every subclass.
+
+
+### Printing Objects
+In addition to the functionalities discussed in the previous subsection, it is also worth mentioning the `Draw` and `UpdateBoundaries` methods. The objects I create are dynamic, which means I cannot implement them in the standard way (e.g., as a `PictureBox`), since such an approach leads to various issues like flickering or visible white edges. A much better practice is to render objects using the `Draw` method, which relies on a `Graphics` object passed as an argument.
+
+Rendering objects in this manner is more dynamic, consumes fewer resources, and provides greater flexibility when creating multiple objects or manipulating their positions.
+```C#
+public abstract class GameObject // Base class for all objects, defining their basic properties
+{
+    public int x { get; set; } // X position
+    public int y { get; set; } // Y position
+    public int width { get; set; } // Object width
+    public int height { get; set; } // Object height
+    public Image objectImage { get; set; } // Object image
+
+    // Default form boundaries
+    public static int boundaryWidth { get; set; } = 821;
+    public static int boundaryHeight { get; set; } = 700;
+
+    public GameObject(int x, int y, int width, int height, Image image)
+    {
+        this.x = x; // Set X position
+        this.y = y; // Set Y position
+        this.width = width; // Set width
+        this.height = height; // Set height
+        objectImage = image; // Set image
+    }
+
+    public abstract void Move(); // Abstract Move method, each object has its own logic here
+
+    public virtual void Draw(Graphics g) // Method checks if the object has an assigned image and draws it
+    {
+        if (objectImage != null)
+        {
+            g.DrawImage(objectImage, new Rectangle(x, y, width, height));
+        }
+    }
+}
+```
+
+
+### Paddle
+The most important mechanic in the paddle-handling class is its movement. The `SetVelocity` method allows setting the target movement speed to the left or right. However, it never directly changes the object’s final position—instead, it only influences its gradual update, which is carried out by the `Move` method.
+
+All of this is achieved using the following formula:
+```C#
+currentVelocity += (targetVelocity - currentVelocity) * 0.2f;
+x += (int)currentVelocity;
+```
+Another aspect I would like to discuss is preventing the player from moving the paddle outside the boundaries of the form.
+```C#
+// Prevent the paddle from going beyond the left boundary
+if (x < 0)
+    x = 0;
+
+// Prevent the paddle from going beyond the right boundary
+if (x + width > GameObject.boundaryWidth)
+    x = GameObject.boundaryWidth - width;
+```
+
+
+### Ball
+Handling the ball’s movement is slightly more complex than managing the paddle, as it requires implementing collision mechanics, direction changes, and speed adjustments. At the beginning I define two fields representing the velocities along the X and Y axes, which are updated each time the method is called. These velocities are randomized within a certain range, adding more dynamism to the game.
+
+In the main movement-handling method, the ball’s position is updated based on its velocity. Similar to the paddle, I also prevent the ball from leaving the boundaries of the form. The key difference, however, is that when the ball collides with any edge, its direction is reversed.
+```C#
+// Check for collisions with the walls
+if (x <= 0 || x + width >= GameObject.boundaryWidth)
+{
+    velocityX *= -1; // Bounce off the left or right wall, reversing the ball's direction
+}
+if (y <= 0)  // Bounce off the top boundary has the same effect
+{
+    velocityY *= -1;
+}
+```
+I also create the public method that changes ball direction in order to use it in class responsible for game logic.
+
+
+### Brick
+A brick is not a moving object, so I focused only on creating a field that indicates whether the brick has already been destroyed. I also added a randomizer inside the constructor to assign images to each brick randomly.
 
 
 
+## Game Mechanics
+### CollisionManager
+The class is responsible for detecting collisions between game objects and implementing the logic that handles them. It iterates over the list of bricks to check whether the ball has touched any of them, and if so, marks the brick as destroyed.
+
+At first, it might seem unusual that part of the collision mechanics is handled within the `GameObjects` region and part within a separate class. However, this approach is intentional. The strategy supports encapsulation and makes the code easier to maintain, ensuring that each class is responsible only for its own functionality (SRP – Single Responsibility Principle).
+
+In summary, the `CollisionManager` serves as the central hub for handling collisions, while `GameObjects` contains the methods that determine what happens after a collision occurs.
+```C#
+// Ball-paddle collision, considering three conditions:
+if (game.ball.y + game.ball.height >= game.paddle.y &&
+    game.ball.x + game.ball.width >= game.paddle.x &&
+    game.ball.x <= game.paddle.x + game.paddle.width)
+{
+    game.ball.Bounce(); // Bounce the ball off the paddle
+}
+
+// Ball-brick collisions. Iterate through all bricks and check for collisions with the ball
+foreach (var brick in game.bricks)
+{
+    if (!brick.isDestroyed &&
+        game.ball.x + game.ball.width > brick.x &&
+        game.ball.x < brick.x + brick.width &&
+        game.ball.y + game.ball.height > brick.y &&
+        game.ball.y < brick.y + brick.height)
+    {
+        game.ball.Bounce(); // Bounce the ball off the brick
+        brick.Destroy(); // Destroy the brick
+    }
+}
+```
+
+
+### InputManager
+A public class responsible for handling user input. It enables keyboard-based controls when the player presses a movement key, the paddle’s velocity increases in the corresponding direction, updating its position accordingly.
+
+I put special attention to the paddle control in demo mode. In this mode, the paddle automatically tracks the ball’s movement by shifting whenever the X-coordinates of their centers do not match.
+```C#
+public void HandleDemoMovement() // Handles demo mode where the paddle follows the ball along the X axis
+{
+    int demoSpeed = GameConstants.paddleSpeed - 3; // Paddle speed in demo mode (slightly slower)
+    int paddleCenter = game.paddle.x + game.paddle.width / 2;
+    int ballCenter = game.ball.x + game.ball.width / 2;
+
+    if (paddleCenter < ballCenter - 5)
+        game.paddle.SetVelocity(demoSpeed); // If paddle center is left of the ball, move paddle right
+    else if (paddleCenter > ballCenter + 5)
+        game.paddle.SetVelocity(-demoSpeed); // If paddle center is right of the ball, move paddle left
+    else
+        game.paddle.SetVelocity(0); // If paddle center aligns with ball center, stop the paddle
+}
+```
+
+
+## Game Class
+### Start Method
+The `Start` method is an initialization method in which all movable objects and bricks are created. It also sets up and starts the timer—the most crucial component for running the game. This method is called each time the player starts a new game.
+
+
+### TimerTick
+A method responsible for the main game loop, which initializes and manages the previously implemented mechanics such as collisions, speed, and movement.
+```C#
+private void Timer_Tick(object sender, EventArgs e) // Timer actions
+{
+    ball.Move(); // Handle the ball's movement
+
+    if (isDemoMode)
+        InputManager.HandleDemoMovement(); // If demo mode is active, use the automated paddle movement
+
+    paddle.Move(); // Handle the paddle's movement
+    CollisionManager.CheckCollisions(); // Check collisions
+    GameLostCheck(); // Verify if the game is lost
+    GameWonCheck(); // Verify if the game is won
+    view.Invalidate(); // Refresh the game view
+}
+```
+
+
+### End of Game
+The end of game event is handled through five interrelated methods. The most important are `GameWonCheck` and `GameLostCheck`, which verify whether all the blocks have been destroyed or if the ball has fallen below the bottom edge of the screen. In both cases, the `EndGame` method is triggered, stopping the timer and marking the game as inactive.
+
+Additionally, methods are called to display windows informing the player of a win or loss (including in demo mode). Finally, regardless of the reason the game ended, the player has the option to start a new game or return to the main menu.
 
 
 
+## Copyrights
+All graphics used in the program (background, ball, paddle, bricks) were created by me using free graphic software.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+The font used in the program does not belong to me and was used under a free license for non-commercial use. The font was created by Allison J. James and Daniel Johnston Menezes. For more information about their work, please visit the [authors’ website](https://www.fontspace.com/chequered-ink).
 
 
 
