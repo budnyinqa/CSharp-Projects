@@ -1,4 +1,7 @@
 # CSharp-Projects
+This repository contains three projects, each representing a different stage of my learning journey. The first project begins at level zero, designed as a very beginner-friendly application. By the third project, I was applying object-oriented programming principles and utilizing all the skills I had acquired up to that point.
+
+Working on these projects greatly improved my understanding of how to build user-friendly applications and helped me develop a structured approach to software design.
 
 
 
