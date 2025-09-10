@@ -171,9 +171,10 @@ https://github.com/user-attachments/assets/48091bdb-56d3-45fe-bea7-42b6b1413c02
 
 
 ## Brick Breaker - Project 3
-The goal of the project is to create a Breakout-style game, in which the player controls a paddle that bounces a ball in order to destroy all the bricks on the screen. The ball bounces off the walls, the paddle, and the bricks, destroying them upon collision, and if it falls below the bottom edge of the screen, the game ends.
+The goal of the project is to create a Breakout-style game, in which the player controls a paddle that bounces a ball in order to destroy all the bricks on the screen. The ball bounces off the walls, the paddle, and the bricks, destroying them upon collision, and if it falls below the bottom edge of the screen, the game ends. A demo has also been included, showing a game played automatically, where the paddle moves on its own.
 
-A demo has also been included, showing a game played automatically, where the paddle moves on its own.
+The code is designed to follow all established object-oriented programming principles, including Encapsulation, Inheritance, Polymorphism, and Abstraction, as well as the Single Responsibility Principle (SRP). These rules ensure clean architecture, improved maintainability, and greater flexibility when extending or modifying the project.
+
 
 
 ### Main Menu
@@ -443,52 +444,3 @@ https://github.com/user-attachments/assets/c4d70417-af7b-41c0-a52b-5f9cb860ba43
 All graphics used in the program (background, ball, paddle, bricks) were created by me using free graphic software.
 
 The font used in the program does not belong to me and was used under a free license for non-commercial use. The font was created by Allison J. James and Daniel Johnston Menezes. For more information about their work, please visit the [authors’ website](https://www.fontspace.com/chequered-ink).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
