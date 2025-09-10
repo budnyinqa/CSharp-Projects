@@ -443,7 +443,6 @@ https://github.com/user-attachments/assets/c4d70417-af7b-41c0-a52b-5f9cb860ba43
 
 
 
-
 ### Copyrights
 All graphics used in the program (background, ball, paddle, bricks) were created by me using free graphic software.
 
