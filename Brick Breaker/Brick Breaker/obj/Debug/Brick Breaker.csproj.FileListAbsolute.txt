@@ -1,0 +1,10 @@
+C:\Users\HARDPC\source\repos\Brick Breaker\Brick Breaker\obj\Debug\Brick Breaker.csproj.AssemblyReference.cache
+C:\Users\HARDPC\source\repos\Brick Breaker\Brick Breaker\obj\Debug\Brick_Breaker.Properties.Resources.resources
+C:\Users\HARDPC\source\repos\Brick Breaker\Brick Breaker\obj\Debug\Brick Breaker.csproj.GenerateResource.cache
+C:\Users\HARDPC\source\repos\Brick Breaker\Brick Breaker\obj\Debug\Brick Breaker.csproj.CoreCompileInputs.cache
+C:\Users\HARDPC\source\repos\Brick Breaker\Brick Breaker\bin\Debug\Brick Breaker.exe.config
+C:\Users\HARDPC\source\repos\Brick Breaker\Brick Breaker\bin\Debug\Brick Breaker.exe
+C:\Users\HARDPC\source\repos\Brick Breaker\Brick Breaker\bin\Debug\Brick Breaker.pdb
+C:\Users\HARDPC\source\repos\Brick Breaker\Brick Breaker\obj\Debug\Brick Breaker.exe
+C:\Users\HARDPC\source\repos\Brick Breaker\Brick Breaker\obj\Debug\Brick Breaker.pdb
+C:\Users\HARDPC\source\repos\Brick Breaker\Brick Breaker\obj\Debug\Brick_Breaker.Form1.resources
